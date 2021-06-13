@@ -17,8 +17,6 @@ exports.signup = (req, res, next) => {
     })
     .catch(error => res.status(500).json({ error }));
 
-
-
 }
 
 exports.login = (req, res, next) => {
@@ -35,12 +33,12 @@ exports.login = (req, res, next) => {
                token : jsonwebtoken.sign(
                    { userId : user._id },
                    'dfk{#{`|[^@`sdfgfds~#{{[#|#`dfgxdfg5465^$*ù!ù*dq',
-                   { expireIn : '24h' }
+                   { expiresIn : '24h' }
                )
            });
         })
-        .catch(error => res.status(500).json({ error }));
+        .catch(error => { res.status(500).json( { error } ) });
     })
-    .catch(error => res.status(500).json({ error }))
+    .catch(error => res.status(503).json({ error }))
 
 }
