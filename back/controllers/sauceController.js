@@ -1,5 +1,6 @@
 const sauceModel = require('../models/sauceModel');
-const handleLikes = require('../middlewares/hundleLikes')
+const handleLikes = require('../middlewares/hundleLikes');
+const fs = require('fs');
 
 exports.getAllSauces = (req,res) => {
     sauceModel.find()
@@ -37,9 +38,21 @@ exports.updateSauce = (req,res) => {
 };
 
 exports.deleteSauce = (req,res) => {
-    sauceModel.deleteOne({ _id : req.params.id })
-    .then( () => res.status(200).json( { message : 'Sauce successfully deleted' } ))
+
+    sauceModel.findOne({ _id : req.params.id })
+    .then(sauce => {
+        const fileName = sauce.imageUrl.split('/images/')[1];
+
+        fs.unlink(`images/${fileName}`, () => {
+            sauceModel.deleteOne({ _id : req.params.id })
+            .then( () => res.status(200).json( { message : 'Sauce successfully deleted' } ))
+            .catch(error => res.status(400).json( { error } ));            
+        });
+
+    })
     .catch(error => res.status(400).json( { error } ));
+
+
 };
 
 
