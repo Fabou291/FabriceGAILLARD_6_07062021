@@ -1,6 +1,7 @@
 const sauceModel = require('../models/sauceModel');
 const handleLikes = require('../middlewares/hundleLikes');
 const fs = require('fs');
+const { update } = require('../models/sauceModel');
 
 exports.getAllSauces = (req,res) => {
     sauceModel.find()
@@ -26,15 +27,37 @@ exports.createSauce = (req,res) => {
     .catch(error => res.status(400).json( { error } ));
 };
 
-exports.updateSauce = (req,res) => {
-    const sauceReq = JSON.parse(req.body.sauce);
+updateS = (req,res, sauceReq) => {
+    
     sauceModel.updateOne({ _id : req.params.id }, { 
         ...sauceReq, 
-        _id : req.params._id, 
-        imageUrl : `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+        _id : req.params.id
     })
     .then( () => res.status(200).json( { message : 'Sauce successfully updated' } ))
     .catch(error => res.status(400).json( { error } ));
+}
+
+updateSauceWithFile = (req, res) => {
+    const sauceReq = {  
+        ...JSON.parse(req.body.sauce), 
+        imageUrl : `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+    };
+
+    sauceModel.findOne({ _id : req.params.id })
+    .then(sauce => {
+        const fileName = sauce.imageUrl.split('/images/')[1];
+        fs.unlink(`images/${fileName}`, ()=> {  updateS(req, res, sauceReq) })
+    })
+    .catch(error => res.status(400).json( { error } ));
+}
+
+updateSauceWithoutFile = (req, res) => {
+    updateS(req, res, { ...req.body });
+}
+
+exports.updateSauce = (req,res) => {
+    if(req.file) updateSauceWithFile(req,res)
+    else updateSauceWithoutFile(req,res);
 };
 
 exports.deleteSauce = (req,res) => {
@@ -54,8 +77,6 @@ exports.deleteSauce = (req,res) => {
 
 
 };
-
-
 
 exports.likeSauce = (req,res) => {
     sauceModel.findOne({ _id : req.params.id })
