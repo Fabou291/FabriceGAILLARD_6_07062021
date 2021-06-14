@@ -1,8 +1,14 @@
 const userModel = require('../models/userModel');
 const bcrypt = require('bcrypt');
 const jsonwebtoken = require('jsonwebtoken');
+const globalConfig = require('../config/global');
+const passwordValidatorConfig = require('../middlewares/passwordValidatorConfig')
 
 exports.signup = (req, res, next) => {
+
+    if(!passwordValidatorConfig.validate(req.body.password)) 
+        res.status(400).json({  message : "Le mot de passe que vous avez renseigné n'est pas valide" })
+        
 
     bcrypt.hash(req.body.password,10)
     .then(hash => {
@@ -32,7 +38,7 @@ exports.login = (req, res, next) => {
                userId : user._id,
                token : jsonwebtoken.sign(
                    { userId : user._id },
-                   'dfk{#{`|[^@`sdfgfds~#{{[#|#`dfgxdfg5465^$*ù!ù*dq',
+                   globalConfig.tokenSalt,
                    { expiresIn : '24h' }
                )
            });

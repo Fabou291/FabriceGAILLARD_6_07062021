@@ -4,6 +4,9 @@ const mongoose = require('mongoose');
 const userRouter = require('./routes/userRouter');
 const sauceRouter = require('./routes/sauceRouter');
 
+const path = require('path');
+
+
 
 mongoose.connect( 'mongodb+srv://user1:gsg291gsg@cluster0.r78hj.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
 { 
@@ -21,6 +24,8 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
     next();
   });
+
+app.use('/images', express.static(path.join(__dirname, 'images/')))
 
 app.use(express.json());
 
