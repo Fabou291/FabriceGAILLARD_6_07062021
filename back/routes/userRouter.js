@@ -8,4 +8,5 @@ const validAuthFormFields = require("../middlewares/validAuthFormFields");
 router.post( '/signup', validAuthFormFields, userController.signup );
 router.post( '/login', validAuthFormFields, userController.login );
 
+
 module.exports = router;

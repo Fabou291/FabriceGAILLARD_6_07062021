@@ -1,18 +1,17 @@
 const express = require('express');
 const app = express();
-
+const session = require('express-session');
+const rateLimit = require("express-rate-limit");
 const mongoose = require('mongoose');
 const path = require('path');
-
 const userRouter = require('./routes/userRouter');
 const sauceRouter = require('./routes/sauceRouter');
 
-const session = require('express-session');
+
 
 const ONE_HOUR = 1000 * 60 * 60;
 const NODE_ENV = 'devlopment';
 const SESSION_SECRET = '&é"çàràjfd628894513$^*ù:!';
-const rateLimit = require("express-rate-limit");
 
 mongoose.connect( 'mongodb+srv://user1:gsg291gsg@cluster0.r78hj.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
 { 
@@ -49,12 +48,10 @@ app.use(
 
 //Protège des attaques ddos et/ou brute force
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100 // limit each IP to 100 requests per windowMs 
+  windowMs: 2 * 60 * 1000,
+  max: 100
 });
 app.use(limiter);
-
-
 
 app.use(express.json());
 

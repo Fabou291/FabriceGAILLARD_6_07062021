@@ -1,13 +1,20 @@
 const passwordValidator = require('password-validator');
+const fs = require('fs');
+
+let rawdata = fs.readFileSync('commonPass.json');
+let pass = JSON.parse(rawdata);
 
 module.exports = new passwordValidator()
     .is().min(8)
-    .is().max(100)
     .has().uppercase()
     .has().symbols()
     .has().lowercase()
-    .has().digits(2)
+    .has().digits()
     .has().not().spaces()
-    .is().not().oneOf(['Passw0rd', 'Password123']);
+    .is().not().oneOf(Object.values(pass));    
+
+
+
+
 
 
