@@ -7,4 +7,4 @@ app.set('port', port);
 
 http.createServer(app);
 
-app.listen(port);
+app.listen(port, () => console.log(`Le serveur est lancé : http://localhost:${port}`) );

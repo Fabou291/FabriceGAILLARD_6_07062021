@@ -2,15 +2,13 @@ const multer = require('multer');
 
 const mimeTypes = {
     'image/jpg' : 'jpg',
-    'image/jpeg' : 'jpeg',
+    'image/jpeg' : 'jpg',
     'image/png' : 'png'
 };
 
-const isValidMimeType = (mimeType) => {
-    return true;
-}
 
 const storage = multer.diskStorage({
+    
         destination: function (req, file, cb) {
             cb(null, 'images/')
         },

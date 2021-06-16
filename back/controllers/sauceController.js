@@ -1,7 +1,7 @@
 const sauceModel = require('../models/sauceModel');
 const handleLikes = require('../middlewares/hundleLikes');
 const fs = require('fs');
-const { update } = require('../models/sauceModel');
+
 
 exports.getAllSauces = (req,res) => {
     sauceModel.find()
