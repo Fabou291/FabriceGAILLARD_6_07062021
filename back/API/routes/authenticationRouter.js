@@ -1,6 +1,7 @@
 import express from "express";
 import userController from "../controllers/userController.js";
 import emailHandler from "../middlewares/emailHandler.js";
+import passwordHandler from "../middlewares/passwordHandler.js";
 
 const router = express.Router();
 
@@ -11,7 +12,9 @@ router.post(
 router.post(
     "/signup",
     emailHandler.parse,
+    passwordHandler.parse,
     emailHandler.encrypt,
+    passwordHandler.encrypt,
     userController.create
 );
 
