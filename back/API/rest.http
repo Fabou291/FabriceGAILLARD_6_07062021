@@ -1,0 +1,23 @@
+### Login
+POST http://localhost:3000/api/auth/login
+
+### Signup
+POST http://localhost:3000/api/auth/signup
+
+### GET all sauces
+GET http://localhost:3000/api/sauces/
+
+### GET one sauce
+GET http://localhost:3000/api/sauces/:id
+
+### Create a sauce
+POST http://localhost:3000/api/sauces
+
+### Modify a sauce
+PUT http://localhost:3000/api/sauces/:id
+
+### Delete a sauce
+DELETE http://localhost:3000/api/sauces/:id
+
+### Handle likes sauces
+POST http://localhost:3000/api/sauces/:id/like
