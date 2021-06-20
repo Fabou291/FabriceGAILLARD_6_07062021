@@ -1,3 +1,5 @@
+import sauceModel from "../models/sauceModel.js";
+
 const getAll = (req, res, next) => {
     res.end("getAll functionnality");
 };

@@ -21,3 +21,6 @@ DELETE http://localhost:3000/api/sauces/:id
 
 ### Handle likes sauces
 POST http://localhost:3000/api/sauces/:id/like
+
+### An unknow route
+GET http://localhost:3000/unknow_route

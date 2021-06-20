@@ -23,9 +23,15 @@ app.use(express.static("../front/src/images/sauces"));
 
 app.use(express.json());
 
-
-
 app.use('/api/auth', authenticationRouter);
 app.use('/api/sauces', sauceRouter);
+
+app.use((req,res, next) => {
+    res.status(404).send({
+        error : {
+            message : 'Not found'
+        }
+    })
+})
 
 export default app;

@@ -1,3 +1,5 @@
+import userModel from "../models/userModel.js";
+
 const create = (req, res, next) => {
     res.end("create user functionnality");
 };
