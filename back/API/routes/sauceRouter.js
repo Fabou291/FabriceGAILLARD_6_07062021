@@ -1,29 +1,18 @@
 import express from "express";
+import sauceController from "../controllers/sauceController.js";
 
 const router = express.Router();
 
-router.get("/", (req, res, next) => {
-  res.end("on GET sauce route /");
-});
+router.get("/", sauceController.getAll);
 
-router.get("/:id", (req, res, next) => {
-  res.end("on GET sauce route /:id");
-});
+router.get("/:id", sauceController.getOne);
 
-router.post("/", (req, res, next) => {
-  res.end("on POST sauce route /");
-});
+router.post("/", sauceController.create);
 
-router.put("/:id", (req, res, next) => {
-  res.end("on PUT sauce route /:id");
-});
+router.put("/:id", sauceController.modify);
 
-router.delete("/:id", (req, res, next) => {
-  res.end("on DELETE sauce route /:id");
-});
+router.delete("/:id", sauceController.remove);
 
-router.post("/:id/like", (req, res, next) => {
-  res.end("on POST sauce route /:id/like");
-});
+router.post("/:id/like", sauceController.handleLike);
 
 export default router;
