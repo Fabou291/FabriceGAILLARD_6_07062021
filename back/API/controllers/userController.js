@@ -1,7 +1,10 @@
 import userModel from "../models/userModel.js";
+import bcrypt from 'bcrypt';
+
 
 const create = (req, res, next) => {
-    res.end("create user functionnality");
+    
+    res.send(req.body);
 };
 
 const login = (req, res, next) => {

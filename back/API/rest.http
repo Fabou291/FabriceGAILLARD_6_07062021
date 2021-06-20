@@ -1,8 +1,15 @@
-### Login
-POST http://localhost:3000/api/auth/login
-
 ### Signup
 POST http://localhost:3000/api/auth/signup
+Content-type : application/json
+
+{
+    "email" : "fabou291@gmail.com",
+    "password" : "jjj"
+}
+
+
+### Login
+POST http://localhost:3000/api/auth/login
 
 ### GET all sauces
 GET http://localhost:3000/api/sauces/
