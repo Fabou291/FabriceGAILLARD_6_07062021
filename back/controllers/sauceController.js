@@ -11,8 +11,8 @@ exports.getAllSauces = (req,res) => {
 
 exports.getOneSauce = (req,res) => {
     sauceModel.findOne({ _id : req.params.id })
-    .then(sauce =>  res.status(200).json(sauce) )
-    .catch(error => res.status(400).json( { error } ));
+    .then(sauce => res.status(200).json(sauce))
+    .catch(error => res.status(404).json( { error } ));
 };
 
 exports.createSauce = (req,res) => {
@@ -87,7 +87,7 @@ exports.likeSauce = (req,res) => {
         .then((sauce) => res.status(200).json( sauce ))
         .catch( error => res.status(400).json({error}));
     })
-    .catch(error => res.status(400).json( { error } ));
+    .catch(error => res.status(404).json( { error } ));
 };
 
 

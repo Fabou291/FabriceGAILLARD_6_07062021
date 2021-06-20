@@ -37,7 +37,6 @@ app.use((req, res, next) => {
     res.setHeader('Cross-Origin-Opener-Policy', 'same-origin')
     res.setHeader('Cross-Origin-Resources-Policy', 'same-origin')
 
-
     next();
 });
 
@@ -56,12 +55,14 @@ app.use(
   })
 );
 
+/*
 //Protège des attaques ddos et/ou brute force
 const limiter = rateLimit({
   windowMs: 0.5 * 60 * 1000,
   max: 100
 });
 app.use(limiter);
+*/
 
 app.use(express.json());
 
