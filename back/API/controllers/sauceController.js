@@ -1,18 +1,16 @@
 import sauceModel from "../models/sauceModel.js";
 import createHttpError from "http-errors";
+import likeHandler from "../helpers/LikeHandler.js";
 
-
-
-
-export default { 
-    getAll : (req, res, next) => {
+export default {
+    getAll: (req, res, next) => {
         sauceModel
             .find()
             .then((sauces) => res.status(200).json({ sauces }))
             .catch((error) => console.log(error));
     },
 
-    getOne : (req, res, next) => {
+    getOne: (req, res, next) => {
         sauceModel
             .findOne({ _id: req.params.id })
             .then((sauce) => {
@@ -21,8 +19,8 @@ export default {
             })
             .catch((error) => res.status(404).json({ error }));
     },
-    
-    create : (req, res, next) => {
+
+    create: (req, res, next) => {
         delete req.body._id;
         const sauce = new sauceModel({ ...req.body });
         sauce
@@ -32,46 +30,56 @@ export default {
             )
             .catch((error) => res.status(400).json({ error }));
     },
-    
-    modify : (req, res, next) => {
+
+    modify: (req, res, next) => {
         sauceModel
-            .updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id })
+            .updateOne(
+                { _id: req.params.id },
+                { ...req.body, _id: req.params.id }
+            )
             .then((result) => {
-                if (!result.ok)
-                    throw createHttpError.UnprocessableEntity("Wrong arguments");
+                if (!result.ok) 
+                    throw createHttpError.UnprocessableEntity( "Wrong arguments" );
+
                 const message =
                     result.nModified == 0
                         ? "nothing has been changed on this sauce"
                         : "sauce successfully updated";
+
                 res.status(200).json({ message: message });
             })
             .catch((error) => res.status(400).json({ error }));
     },
-    
-    remove : (req, res, next) => {
+
+    remove: (req, res, next) => {
         sauceModel
             .deleteOne({ _id: req.params.id })
-            .then(res.status(200).json({ message: "The sauce hase been removed" }))
+            .then(result => {
+                const message = (result.deletedCount == 0) ? "Nothing to delete" : "The sauce hase been removed" ;
+                res.status(200).json({ message: message })
+            })
             .catch((error) => res.status(400).json({ error }));
     },
-    
-    handleLike : async (req, res, next) => {
-        
-        try{
+
+    like: async (req, res, next) => {
+        try {
             const sauce = await sauceModel.findOne({ _id: req.params.id });
             if (!sauce) throw createHttpError.NotFound("Sauce not found");
 
-            sauce
+            const result = await sauceModel.updateOne(
+                { _id: req.params.id },
+                { ...likeHandler(sauce, req.body.like, req.body.userId) }
+            );
+
+            const message =
+                result.nModified == 0
+                    ? "nothing has been changed on this sauce"
+                    : "sauce successfully updated";
+
+            res.status(200).json({ message: message });
+
+        } catch (error) {
+            res.status(404).json({ error });
         }
-        catch(error){
-            res.status(404).json({ error })
-        };
-    
-    
-        //req.updateOne({ _id: req.params.id }, { likes: "", dislikes : "", usersLiked, usersDisliked });
-        res.end("handleLike functionnality");
-    
-    
-    
-    }
+    },
 };

@@ -26,8 +26,6 @@ app.use(cookieParser());
 
 app.use(express.json());
 
-//app.use(express.cookieParser());
-
 app.use('/api/auth', authenticationRouter);
 app.use('/api/sauces', sauceRouter);
 

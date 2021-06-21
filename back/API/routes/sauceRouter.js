@@ -14,6 +14,6 @@ router.put("/:id", sauceController.modify);
 
 router.delete("/:id", sauceController.remove);
 
-router.post("/:id/like", sauceController.handleLike);
+router.post("/:id/like", sauceController.like);
 
 export default router;

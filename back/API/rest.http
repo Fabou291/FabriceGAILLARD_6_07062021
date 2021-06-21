@@ -48,10 +48,16 @@ Content-type : application/json
 }
 
 ### Delete a sauce
-DELETE http://localhost:3000/api/sauces/:id
+DELETE http://localhost:3000/api/sauces/60d0932c7dcdd028541cb0ec 
 
 ### Handle likes sauces
-POST http://localhost:3000/api/sauces/:id/like
+POST http://localhost:3000/api/sauces/60cc80508e23851fa4666066/like
+Content-type : application/json
+
+{
+    "userId" : "60d03d091f3a0a3538fa9f85",
+    "like" : 1
+}
 
 ### An unknow route
 GET http://localhost:3000/unknow_route
