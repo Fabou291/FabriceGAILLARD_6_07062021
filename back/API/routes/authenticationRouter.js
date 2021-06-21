@@ -7,7 +7,8 @@ const router = express.Router();
 
 router.post(
     "/login",
-    userController.create
+    emailHandler.encrypt,
+    userController.login
 );
 router.post(
     "/signup",

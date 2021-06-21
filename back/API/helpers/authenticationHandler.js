@@ -1,8 +1,9 @@
 import JWT from "jsonwebtoken";
+
 import dotenv from "dotenv";
 dotenv.config();
 
-const isValid = (res, req, next) => {
+const isValidToken = (res, req, next) => {
     try {
         const decodedToken = JWT.verify(
             req.headers.authorization.split(" ")[1],
@@ -18,8 +19,10 @@ const isValid = (res, req, next) => {
     }
 };
 
+
+
 const createToken = (userId) => {
-    
+
     return JWT.sign(
         { userId: userId },
         process.env.SECRET_TOKEN, 
@@ -37,4 +40,4 @@ const createRefreshToken = (userId) => {
     next();
 };
 
-export default { isValid, createToken, createRefreshToken};
+export default {  createToken, createRefreshToken};
