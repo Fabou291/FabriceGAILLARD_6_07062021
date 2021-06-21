@@ -1,4 +1,5 @@
 import express from "express";
+import cookieParser from "cookie-parser"
 import mongoDB from "../config/mongoDB.js";
 
 import authenticationRouter from "./routes/authenticationRouter.js";
@@ -21,7 +22,11 @@ app.use((req, res, next) => {
 
 app.use(express.static("../front/src/images/sauces"));
 
+app.use(cookieParser());
+
 app.use(express.json());
+
+//app.use(express.cookieParser());
 
 app.use('/api/auth', authenticationRouter);
 app.use('/api/sauces', sauceRouter);

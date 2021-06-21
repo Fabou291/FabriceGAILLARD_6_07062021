@@ -30,8 +30,10 @@ const login = async (req, res, next) => {
         if(!isValidPassword) throw createError.Unauthorized('Invalid password');
 
         const token = authenticationHandler.createToken(user._id);
+        const refreshToken = authenticationHandler.createToken(user._id);
 
-        res.status(200).json({ token })
+        res.cookie('refreshToken', refreshToken)
+        res.status(200).json({ token, refreshToken })
     }
     catch(error){
         res.status(error.statusCode).json({ error });

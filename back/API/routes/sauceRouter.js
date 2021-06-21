@@ -1,5 +1,6 @@
 import express from "express";
 import sauceController from "../controllers/sauceController.js";
+import authenticationHandler from "../helpers/authenticationHandler.js";
 
 const router = express.Router();
 

@@ -1,7 +1,3 @@
-###All
-GET http://localhost:3000
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MGQwM2QwOTFmM2EwYTM1MzhmYTlmODUiLCJpYXQiOjE2MjQyNjQwMzIsImV4cCI6MTYyNDI2NzYzMn0.uMRVl6oY-GgOwIYWp_3Kl8HLmYu9WlkistvyauchU7M 
-
 ### Signup
 POST http://localhost:3000/api/auth/signup
 Content-type : application/json
@@ -22,16 +18,34 @@ Content-type : application/json
 
 ### GET all sauces
 GET http://localhost:3000/api/sauces/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MGQwM2QwOTFmM2EwYTM1MzhmYTlmODUiLCJpYXQiOjE2MjQyNjgyMTAsImV4cCI6MTYyNDI2ODIxMX0.jj3-eZnIJYpq_M9nIojxpyWDyGVHo1IBcqjUDXceD1c
 
 
 ### GET one sauce
-GET http://localhost:3000/api/sauces/:id
+GET http://localhost:3000/api/sauces/60cc80508e23851fa4666066
 
 ### Create a sauce
 POST http://localhost:3000/api/sauces
+Content-type : application/json
+
+{
+  "name": "string",
+  "manufacturer": "string",
+  "description": "string",
+  "heat": 1,
+  "imageUrl": "string",
+  "mainPepper": "string",
+  "userId": "string"
+}
 
 ### Modify a sauce
-PUT http://localhost:3000/api/sauces/:id
+PUT http://localhost:3000/api/sauces/60cc80508e23851fa4666066
+Content-type : application/json
+
+{
+  "name": "strdddazedddding",
+  "manufacturer" : "tzruc"
+}
 
 ### Delete a sauce
 DELETE http://localhost:3000/api/sauces/:id
