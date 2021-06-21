@@ -1,6 +1,7 @@
 import sauceModel from "../models/sauceModel.js";
 import createHttpError from "http-errors";
 import likeHandler from "../helpers/LikeHandler.js";
+import fs from "fs";
 
 const removeImageSauce = async (id) => {
     try {
@@ -8,8 +9,9 @@ const removeImageSauce = async (id) => {
         const fileName = sauce.imageUrl.split("/images/")[1];
         await fs.unlink(`images/${fileName}`);
     } catch (error) {
-        res.status(400).json({ error });
+        return error;
     }
+    return true;
 };
 
 export default {
@@ -31,8 +33,21 @@ export default {
     },
 
     create: (req, res, next) => {
+        req.body.sauce = JSON.parse(req.body.sauce);
+
+        /*
+            Faire la verif de l'authentification au milieu 
+            (permettant également d'ajouter au body de la req le UserId)
+            Ajouter le path de l'image
+        */
+
         delete req.body._id;
-        const sauce = new sauceModel({ ...req.body });
+        const sauce = new sauceModel({
+            ...req.body.sauce,
+            imageUrl: `${req.protocol}://localhost:4200/images/${
+                req.file.filename
+            }`,
+        });
         sauce
             .save()
             .then(() =>
@@ -45,7 +60,9 @@ export default {
         if (req.file) {
             req = {
                 ...JSON.parse(req.body.sauce),
-                imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
+                imageUrl: `${req.protocol}://${req.get("host")}/images/${
+                    req.file.filename
+                }`,
             };
             await removeImageSauce(req.params.id);
         }
@@ -71,8 +88,8 @@ export default {
             .catch((error) => res.status(400).json({ error }));
     },
 
-    remove: (req, res, next) => {
-        await removeImageSauce(req.params.id);
+    remove: async (req, res, next) => {
+        const removed = await removeImageSauce(req.params.id);
 
         sauceModel
             .deleteOne({ _id: req.params.id })

@@ -1,6 +1,7 @@
 import express from "express";
 import sauceController from "../controllers/sauceController.js";
 import authenticationHandler from "../helpers/authenticationHandler.js";
+import multerConfig from "../middlewares/multerConfig.js";
 
 const router = express.Router();
 
@@ -8,7 +9,7 @@ router.get("/", sauceController.getAll);
 
 router.get("/:id", sauceController.getOne);
 
-router.post("/", sauceController.create);
+router.post("/", multerConfig, sauceController.create);
 
 router.put("/:id", sauceController.modify);
 

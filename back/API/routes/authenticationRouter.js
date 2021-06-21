@@ -2,6 +2,7 @@ import express from "express";
 import userController from "../controllers/userController.js";
 import emailHandler from "../middlewares/emailHandler.js";
 import passwordHandler from "../middlewares/passwordHandler.js";
+import authenticationMiddleware from "../middlewares/authenticationMiddleware.js"
 
 const router = express.Router();
 
@@ -18,5 +19,7 @@ router.post(
     passwordHandler.encrypt,
     userController.create
 );
+
+router.get("/auth", authenticationMiddleware)
 
 export default router;

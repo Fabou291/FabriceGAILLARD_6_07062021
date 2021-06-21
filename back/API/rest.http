@@ -29,13 +29,15 @@ POST http://localhost:3000/api/sauces
 Content-type : application/json
 
 {
-  "name": "string",
-  "manufacturer": "string",
-  "description": "string",
-  "heat": 1,
-  "imageUrl": "string",
-  "mainPepper": "string",
-  "userId": "string"
+  "sauce" : {
+    "name": "string",
+    "manufacturer": "string",
+    "description": "string",
+    "heat": 1,
+    "imageUrl": "string",
+    "mainPepper": "string",
+    "userId": "string"    
+  }
 }
 
 ### Modify a sauce
@@ -48,7 +50,7 @@ Content-type : application/json
 }
 
 ### Delete a sauce
-DELETE http://localhost:3000/api/sauces/60d0932c7dcdd028541cb0ec 
+DELETE http://localhost:3000/api/sauces/60d0a9584ab08643dc6e27ca 
 
 ### Handle likes sauces
 POST http://localhost:3000/api/sauces/60cc80508e23851fa4666066/like
@@ -58,6 +60,11 @@ Content-type : application/json
     "userId" : "60d03d091f3a0a3538fa9f85",
     "like" : 1
 }
+
+
+### Test auth
+GET http://localhost:3000/api/auth/auth
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MGQwM2QwOTFmM2EwYTM1MzhmYTlmODUiLCJpYXQiOjE2MjQyNjgyMTAsImV4cCI6MTYyNDI2ODIxMX0.jj3-eZnIJYpq_M9nIojxpyWDyGVHo1IBcqjUDXceD1c
 
 ### An unknow route
 GET http://localhost:3000/unknow_route
