@@ -2,6 +2,16 @@ import sauceModel from "../models/sauceModel.js";
 import createHttpError from "http-errors";
 import likeHandler from "../helpers/LikeHandler.js";
 
+const removeImageSauce = async (id) => {
+    try {
+        const sauce = await sauceModel.findOne({ _id: id });
+        const fileName = sauce.imageUrl.split("/images/")[1];
+        await fs.unlink(`images/${fileName}`);
+    } catch (error) {
+        res.status(400).json({ error });
+    }
+};
+
 export default {
     getAll: (req, res, next) => {
         sauceModel
@@ -31,15 +41,25 @@ export default {
             .catch((error) => res.status(400).json({ error }));
     },
 
-    modify: (req, res, next) => {
+    modify: async (req, res, next) => {
+        if (req.file) {
+            req = {
+                ...JSON.parse(req.body.sauce),
+                imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
+            };
+            await removeImageSauce(req.params.id);
+        }
+
         sauceModel
             .updateOne(
                 { _id: req.params.id },
                 { ...req.body, _id: req.params.id }
             )
             .then((result) => {
-                if (!result.ok) 
-                    throw createHttpError.UnprocessableEntity( "Wrong arguments" );
+                if (!result.ok)
+                    throw createHttpError.UnprocessableEntity(
+                        "Wrong arguments"
+                    );
 
                 const message =
                     result.nModified == 0
@@ -52,11 +72,16 @@ export default {
     },
 
     remove: (req, res, next) => {
+        await removeImageSauce(req.params.id);
+
         sauceModel
             .deleteOne({ _id: req.params.id })
-            .then(result => {
-                const message = (result.deletedCount == 0) ? "Nothing to delete" : "The sauce hase been removed" ;
-                res.status(200).json({ message: message })
+            .then((result) => {
+                const message =
+                    result.deletedCount == 0
+                        ? "Nothing to delete"
+                        : "The sauce hase been removed";
+                res.status(200).json({ message: message });
             })
             .catch((error) => res.status(400).json({ error }));
     },
@@ -77,7 +102,6 @@ export default {
                     : "sauce successfully updated";
 
             res.status(200).json({ message: message });
-
         } catch (error) {
             res.status(404).json({ error });
         }
