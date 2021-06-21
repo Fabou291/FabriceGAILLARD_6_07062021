@@ -8,10 +8,14 @@ const parse = (req, res, next) => {
     next();
 };
 
-const encrypt = async (req, res, next) => {
-    req.body.password = await bcrypt.hash(req.body.password, 10);
-
-    next();
+const encrypt = (req, res, next) => {
+    bcrypt
+        .hash(req.body.password, 10)
+        .then((hash) => {
+            req.body.password = hash;
+            next();
+        })
+        .catch((error) => res.status(401).json({ error }));
 };
 
 export default { parse, encrypt };
