@@ -33,7 +33,7 @@ const login = async (req, res, next) => {
         const refreshToken = authenticationHandler.createRefreshToken(user._id);
 
         res.cookie('refreshToken', refreshToken)
-        res.status(200).json({ user, token, refreshToken })
+        res.status(200).json({ userId : user._id, token : token })
     }
     catch(error){
         res.status(error.statusCode).json({ error });

@@ -40,7 +40,7 @@ const resetTokens = (userId) => {
 
 
 export default (req, res, next) => {
-    const tokenParams = [
+    /*const tokenParams = [
         req.headers.authorization.split(" ")[1],
         process.env.SECRET_TOKEN,
     ];
@@ -66,9 +66,7 @@ export default (req, res, next) => {
             tokenToDecode = pairToken.token;
             res.cookie("refreshToken", pairToken.refreshToken);
         }
-    }
-
-    req.userId = JWT.decode(tokenToDecode).userId
+    }*/
 
     next();
 };

@@ -27,56 +27,42 @@ export default {
             .findOne({ _id: req.params.id })
             .then((sauce) => {
                 if (!sauce) throw createHttpError.NotFound("Sauce not found");
-                res.status(200).json( sauce );
+                res.status(200).json(sauce);
             })
             .catch((error) => res.status(404).json({ error }));
     },
 
     create: (req, res, next) => {
         req.body.sauce = JSON.parse(req.body.sauce);
+        console.log(req.body);
 
         delete req.body._id;
         const sauce = new sauceModel({
             ...req.body.sauce,
-            imageUrl: `${req.protocol}://${req.get('host')}/images/${
-                req.file.filename
-            }`,
-            userId : req.userId
+            imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
+            userId: req.body.userId,
         });
         sauce
             .save()
-            .then(() =>
-                res.status(200).json({ message: "sauce successfully created" })
-            )
+            .then(() => res.status(200).json({ message: "sauce successfully created" }))
             .catch((error) => res.status(400).json({ error }));
     },
 
     modify: async (req, res, next) => {
         if (req.file) {
-            req = {
+            req.body.sauce = {
                 ...JSON.parse(req.body.sauce),
-                imageUrl: `${req.protocol}://${req.get("host")}/images/${
-                    req.file.filename
-                }`,
+                imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
             };
             await removeImageSauce(req.params.id);
         }
 
         sauceModel
-            .updateOne(
-                { _id: req.params.id },
-                { ...req.body, _id: req.params.id }
-            )
+            .updateOne({ _id: req.params.id }, { ...req.body.sauce, _id: req.params.id })
             .then((result) => {
-                if (!result.ok)
-                    throw createHttpError.UnprocessableEntity(
-                        "Wrong arguments"
-                    );
+                if (!result.ok) throw createHttpError.UnprocessableEntity("Wrong arguments");
 
-                const message =
-                    result.nModified == 0
-                        ? "nothing has been changed on this sauce"
-                        : "sauce successfully updated";
+                const message = result.nModified == 0 ? "nothing has been changed on this sauce" : "sauce successfully updated";
 
                 res.status(200).json({ message: message });
             })
@@ -89,10 +75,7 @@ export default {
         sauceModel
             .deleteOne({ _id: req.params.id })
             .then((result) => {
-                const message =
-                    result.deletedCount == 0
-                        ? "Nothing to delete"
-                        : "The sauce hase been removed";
+                const message = result.deletedCount == 0 ? "Nothing to delete" : "The sauce hase been removed";
                 res.status(200).json({ message: message });
             })
             .catch((error) => res.status(400).json({ error }));
@@ -105,13 +88,10 @@ export default {
 
             const result = await sauceModel.updateOne(
                 { _id: req.params.id },
-                { ...likeHandler(sauce, req.body.like, req.userId) }
+                { ...likeHandler(sauce, req.body.like, req.body.userId) }
             );
 
-            const message =
-                result.nModified == 0
-                    ? "nothing has been changed on this sauce"
-                    : "sauce successfully updated";
+            const message = result.nModified == 0 ? "nothing has been changed on this sauce" : "sauce successfully updated";
 
             res.status(200).json({ message: message });
         } catch (error) {
