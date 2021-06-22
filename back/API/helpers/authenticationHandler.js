@@ -16,7 +16,6 @@ const isValidToken = (token) => {
     return decodedToken;
 }
 
-
 const createToken = (userId) => {
 
     return JWT.sign(
@@ -26,9 +25,6 @@ const createToken = (userId) => {
     );
 
 };
-
-
-
 
 const createRefreshToken = (userId) => {
     return JWT.sign(

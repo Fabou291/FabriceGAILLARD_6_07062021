@@ -12,4 +12,3 @@ export default (sauce, like, userId) => {
         usersDisliked : usersDisliked
     }   
 }
-

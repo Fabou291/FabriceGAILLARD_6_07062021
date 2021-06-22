@@ -18,7 +18,7 @@ export default {
     getAll: (req, res, next) => {
         sauceModel
             .find()
-            .then((sauces) => res.status(200).json({ sauces }))
+            .then((sauces) => res.status(200).json(sauces))
             .catch((error) => console.log(error));
     },
 
@@ -27,7 +27,7 @@ export default {
             .findOne({ _id: req.params.id })
             .then((sauce) => {
                 if (!sauce) throw createHttpError.NotFound("Sauce not found");
-                res.status(200).json({ sauce });
+                res.status(200).json( sauce );
             })
             .catch((error) => res.status(404).json({ error }));
     },
@@ -35,18 +35,13 @@ export default {
     create: (req, res, next) => {
         req.body.sauce = JSON.parse(req.body.sauce);
 
-        /*
-            Faire la verif de l'authentification au milieu 
-            (permettant également d'ajouter au body de la req le UserId)
-            Ajouter le path de l'image
-        */
-
         delete req.body._id;
         const sauce = new sauceModel({
             ...req.body.sauce,
-            imageUrl: `${req.protocol}://localhost:4200/images/${
+            imageUrl: `${req.protocol}://${req.get('host')}/images/${
                 req.file.filename
             }`,
+            userId : req.userId
         });
         sauce
             .save()
@@ -110,7 +105,7 @@ export default {
 
             const result = await sauceModel.updateOne(
                 { _id: req.params.id },
-                { ...likeHandler(sauce, req.body.like, req.body.userId) }
+                { ...likeHandler(sauce, req.body.like, req.userId) }
             );
 
             const message =

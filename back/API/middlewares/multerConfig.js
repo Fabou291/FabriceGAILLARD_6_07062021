@@ -10,7 +10,7 @@ const mimeTypes = {
 const storage = multer.diskStorage({
     
         destination: function (req, file, cb) {
-            cb(null, 'images/')
+            cb(null, 'API/images/')
         },
         filename: function (req, file, cb) {
             const name = file.originalname.split(' ').join('_').split('.').join('_');
