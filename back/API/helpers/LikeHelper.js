@@ -1,4 +1,4 @@
-export default (sauce, like, userId) => {
+ const handle = (sauce, like, userId) => {
     let usersLiked    = sauce.usersLiked.filter(userID => userID != userId);
     let usersDisliked = sauce.usersDisliked.filter(userID => userID != userId);
 
@@ -12,3 +12,5 @@ export default (sauce, like, userId) => {
         usersDisliked : usersDisliked
     }   
 }
+
+export default handle;

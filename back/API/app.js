@@ -18,7 +18,6 @@ headerConfig.initialization(app)
 sessionConfig.initialization(app);
 
 
-
 app.use(express.json());
 app.use("/images", express.static(path.join(__dirname, "images/")));
 app.use("/api/auth", authenticationRouter);

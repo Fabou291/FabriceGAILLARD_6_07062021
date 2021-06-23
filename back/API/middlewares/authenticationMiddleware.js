@@ -1,6 +1,6 @@
 import JWT from "jsonwebtoken";
 import createHttpError from "http-errors";
-import authenticationHandler from "../helpers/authenticationHandler.js";
+import authenticationHandler from "../helpers/authenticationHelper.js";
 
 import userController from "../controllers/userController.js";
 
