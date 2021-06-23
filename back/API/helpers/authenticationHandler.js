@@ -21,7 +21,7 @@ const createToken = (userId) => {
     return JWT.sign(
         { userId: userId },
         process.env.SECRET_TOKEN, 
-        { expiresIn: "1h" }
+        { expiresIn: "1s" }
     );
 
 };

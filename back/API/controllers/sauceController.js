@@ -7,7 +7,7 @@ const removeImageSauce = async (id) => {
     try {
         const sauce = await sauceModel.findOne({ _id: id });
         const fileName = sauce.imageUrl.split("/images/")[1];
-        await fs.unlink(`images/${fileName}`);
+        fs.unlink(`images/${fileName}`, () => { console.log('deleted') });
     } catch (error) {
         return error;
     }
@@ -19,7 +19,7 @@ export default {
         sauceModel
             .find()
             .then((sauces) => res.status(200).json(sauces))
-            .catch((error) => console.log(error));
+            .catch((error) => next(createHttpError.BadRequest(error.message)));
     },
 
     getOne: (req, res, next) => {
@@ -27,25 +27,23 @@ export default {
             .findOne({ _id: req.params.id })
             .then((sauce) => {
                 if (!sauce) throw createHttpError.NotFound("Sauce not found");
-                res.status(200).json(sauce);
+                else res.status(200).json(sauce);
             })
-            .catch((error) => res.status(404).json({ error }));
+            .catch((error) => { next(error) });
     },
 
     create: (req, res, next) => {
         req.body.sauce = JSON.parse(req.body.sauce);
-        console.log(req.body);
 
         delete req.body._id;
         const sauce = new sauceModel({
             ...req.body.sauce,
             imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
-            userId: req.body.userId,
         });
         sauce
             .save()
             .then(() => res.status(200).json({ message: "sauce successfully created" }))
-            .catch((error) => res.status(400).json({ error }));
+            .catch((error) => next(error));
     },
 
     modify: async (req, res, next) => {
@@ -66,11 +64,11 @@ export default {
 
                 res.status(200).json({ message: message });
             })
-            .catch((error) => res.status(400).json({ error }));
+            .catch((error) => next(error));
     },
 
     remove: async (req, res, next) => {
-        const removed = await removeImageSauce(req.params.id);
+        await removeImageSauce(req.params.id);
 
         sauceModel
             .deleteOne({ _id: req.params.id })
@@ -78,7 +76,7 @@ export default {
                 const message = result.deletedCount == 0 ? "Nothing to delete" : "The sauce hase been removed";
                 res.status(200).json({ message: message });
             })
-            .catch((error) => res.status(400).json({ error }));
+            .catch((error) => next(error));
     },
 
     like: async (req, res, next) => {
@@ -95,7 +93,7 @@ export default {
 
             res.status(200).json({ message: message });
         } catch (error) {
-            res.status(404).json({ error });
+            next(error);
         }
     },
 };

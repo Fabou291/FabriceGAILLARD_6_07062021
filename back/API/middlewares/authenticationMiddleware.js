@@ -2,13 +2,13 @@ import JWT from "jsonwebtoken";
 import createHttpError from "http-errors";
 import authenticationHandler from "../helpers/authenticationHandler.js";
 
+import userController from "../controllers/userController.js";
+
 import dotenv from "dotenv";
 dotenv.config();
 
 const isValidToken = (req, tokenParams) => {
     try {
-        if (!req.headers.authorization) return false;
-
         const decodedToken = JWT.verify(...tokenParams);
 
         if (req.body.userId && req.body.userId !== decodedToken.userId)
@@ -24,32 +24,28 @@ const isValidToken = (req, tokenParams) => {
 const resetTokens = (userId) => {
     console.log('reset auth')
     return {
-        token: JWT.sign(
-            { userId: userId },
-            process.env.SECRET_TOKEN, 
-            { expiresIn: "1h" }
-        ),
-        refreshToken: JWT.sign(
-            { userId: userId },
-            process.env.SECRET_REFRESH_TOKEN, 
-            { expiresIn: "1y" }
-        ),
+        token : authenticationHandler.createToken(userId),
+        refreshToken: authenticationHandler.createRefreshToken(userId),
     };
 };
 
 
 
 export default (req, res, next) => {
-    /*const tokenParams = [
+/*
+    if(!req.headers.authorization)
+        return res.status(401).json({ message: "No token" });
+
+    let tokenToDecode = req.headers.authorization.split(" ")[1];
+
+    const tokenParams = [
         req.headers.authorization.split(" ")[1],
         process.env.SECRET_TOKEN,
     ];
     const refreshTokenParams = [
-        req.cookies.refreshToken,
+        JWT.decode(tokenToDecode).userId,
         process.env.SECRET_REFRESH_TOKEN,
     ];
-
-    let tokenToDecode = req.headers.authorization.split(" ")[1];
 
     const tokenIsValid = isValidToken(req, tokenParams);
     if (tokenIsValid === false)
@@ -62,11 +58,11 @@ export default (req, res, next) => {
         if (isValidToken(req, refreshTokenParams) === false || "")
             return res.status(401).json({ message: "2 - Invalid token" });
         else {
-            const pairToken = resetTokens(req.body.userId);
-            tokenToDecode = pairToken.token;
-            res.cookie("refreshToken", pairToken.refreshToken);
+            const pairToken = resetTokens( JWT.decode(tokenToDecode).userId );
+            userController.refreshToken(JWT.decode(tokenToDecode).userId, pairToken.refreshToken);
         }
-    }*/
 
+    }
+*/
     next();
 };

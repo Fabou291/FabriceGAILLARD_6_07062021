@@ -1,11 +1,13 @@
-import userValidation from "../validations/userValidations.js";
 import crypto from "crypto";
+import createHttpError from "http-errors";
+import emailValidator from "email-validator"
 import dotenv from "dotenv";
 dotenv.config();
 
-const parse = (req, res, next) => {
-    if (!userValidation.isAValidEmail(req.body.email))
-        return res.status(401).json({ message: "Invalid email" });
+
+const checkValidity = (req, res, next) => {
+    if (!emailValidator.validate(req.body.email)) 
+        next(createHttpError.Unauthorized('invalid email'));
 
     next();
 };
@@ -26,4 +28,5 @@ const encrypt = (req, res, next) => {
     next();
 };
 
-export default { parse, encrypt} ;
+
+export default { encrypt, checkValidity} ;

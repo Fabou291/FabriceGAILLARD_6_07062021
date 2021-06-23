@@ -1,11 +1,27 @@
-import userValidation from "../validations/userValidations.js";
+import passwordValidator from "password-validator";
 import bcrypt from "bcrypt";
+import createHttpError from "http-errors";
 
-const parse = (req, res, next) => {
-    if (!userValidation.isAValidPassword(req.body.password))
-        return res.status(401).json({ message: "Invalid Password" });
+const getSchema = (password) => {
+    const schema = new passwordValidator();
 
-    next();
+    schema
+        .is() .min(8)
+        .has() .uppercase()
+        .has() .lowercase()
+        .has() .digits()
+        .has() .not() .spaces()
+        .is() .not() .oneOf(["Passw0rd", "Password123"]);
+
+    return schema;
+};
+
+const checkValidity = (req, res, next) => {
+
+    if (!getSchema(req.body.password).validate()) 
+        next(createHttpError.Unauthorized("Invalid Password"));
+    else 
+        next();
 };
 
 const encrypt = (req, res, next) => {
@@ -15,7 +31,7 @@ const encrypt = (req, res, next) => {
             req.body.password = hash;
             next();
         })
-        .catch((error) => res.status(401).json({ error }));
+        .catch((error) => next(createHttpError.InternalServerError(`bcrypt Error : ${error.message}`)));
 };
 
-export default { parse, encrypt };
+export default { encrypt, checkValidity };

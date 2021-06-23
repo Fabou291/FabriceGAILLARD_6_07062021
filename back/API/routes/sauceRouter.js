@@ -1,7 +1,7 @@
 import express from "express";
 import sauceController from "../controllers/sauceController.js";
 import auth from "../middlewares/authenticationMiddleware.js";
-import multerConfig from "../middlewares/multerConfig.js";
+import multer from "../middlewares/multerMiddleware.js";
 
 const router = express.Router();
 
@@ -9,9 +9,9 @@ router.get("/", auth, sauceController.getAll);
 
 router.get("/:id", auth, sauceController.getOne);
 
-router.post("/", auth, multerConfig, sauceController.create);
+router.post("/", auth, multer, sauceController.create);
 
-router.put("/:id", auth, multerConfig, sauceController.modify);
+router.put("/:id", auth, multer, sauceController.modify);
 
 router.delete("/:id", auth, sauceController.remove);
 
