@@ -23,6 +23,7 @@ app.use("/images", express.static(path.join(__dirname, "images/")));
 app.use("/api/auth", authenticationRouter);
 app.use("/api/sauces", sauceRouter);
 app.use((error, req, res, next) => {
+    console.log(error)
     res.status(error.codeStatus || 500).json({error})
 });
 
