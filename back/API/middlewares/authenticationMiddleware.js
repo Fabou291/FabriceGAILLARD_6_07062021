@@ -4,8 +4,6 @@ import authenticationHandler from "../helpers/authenticationHelper.js";
 
 import userController from "../controllers/userController.js";
 
-import dotenv from "dotenv";
-dotenv.config();
 
 const isValidToken = (req, tokenParams) => {
     try {

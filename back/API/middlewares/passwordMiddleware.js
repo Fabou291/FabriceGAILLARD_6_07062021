@@ -14,6 +14,7 @@ const getSchema = (password) => {
         .is() .not() .oneOf(["Passw0rd", "Password123"]);
 
     return schema;
+    
 };
 
 const checkValidity = (req, res, next) => {

@@ -24,7 +24,8 @@ app.use("/api/auth", authenticationRouter);
 app.use("/api/sauces", sauceRouter);
 app.use((error, req, res, next) => {
     console.log(error)
-    res.status(error.codeStatus || 500).json({error})
+    res.status(error.statusCode || 500).json({ error })
+    res.end();
 });
 
 export default app;
