@@ -1,9 +1,12 @@
+import createHttpError from 'http-errors';
 import multer from 'multer';
 
 const mimeTypes = {
     'image/jpg' : 'jpg',
     'image/jpeg' : 'jpg',
-    'image/png' : 'png'
+    'image/png' : 'png',
+    'image/webp' : 'webp',
+    'image/gif' : 'gif'
 };
 
 const storage = multer.diskStorage({
@@ -12,10 +15,17 @@ const storage = multer.diskStorage({
         cb(null, 'images/')
     },
     filename: function (req, file, cb) {
+        let error = null;
+
+        if(!(file.mimetype in mimeTypes)) 
+            error = createHttpError.BadRequest(`type/mime ${file.mimetype} image not unabled`);
+
         const name = file.originalname.split(' ').join('_').split('.').join('_');
-        cb(null, `${name}-${Date.now()}.${mimeTypes[file.mimetype]}` )            
+        cb(error, `${name}-${Date.now()}.${mimeTypes[file.mimetype]}` )            
     }
 })
+
+
 
    
 export default multer({ storage: storage }).single('image')

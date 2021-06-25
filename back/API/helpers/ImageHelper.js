@@ -1,6 +1,6 @@
 import sauceModel from "../models/sauceModel.js";
 import createHttpError from "http-errors";
-import fs from "fs";
+import fsPromises from "fs/promises"
 
 const remove = async (id) => {
     const sauce = await sauceModel.findOne({ _id: id });
@@ -8,7 +8,8 @@ const remove = async (id) => {
 
     const fileName = sauce.imageUrl.split("/images/")[1];
 
-    fs.unlink(`images/${fileName}`, () => {});
+    const err = await fsPromises.unlink(`images/${fileName}`);
+    if(err) throw err;
 };
 
 export default { remove };

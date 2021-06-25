@@ -43,7 +43,7 @@ const modify = async (req, res, next) => {
             ...JSON.parse(req.body.sauce),
             imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
         };
-        imageHelper.remove(req.params.id).catch(error => next(error))
+        await imageHelper.remove(req.params.id).catch(error => next(error))
     } else req.body.sauce = { ...req.body };
 
     sauceModel
@@ -59,7 +59,7 @@ const modify = async (req, res, next) => {
 }
 
 const remove = async (req, res, next) => {
-    await imageHelper.remove(req.params.id);
+    await imageHelper.remove(req.params.id).catch(error => next(error));
 
     sauceModel
         .deleteOne({ _id: req.params.id })

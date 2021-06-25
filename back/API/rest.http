@@ -1,6 +1,7 @@
 ### Signup
 POST http://localhost:3000/api/auth/signup
 Content-type : application/json
+
 {
     "email" : "fabou291@gmail.com",
     "password" : "testTest1234."
@@ -9,11 +10,13 @@ Content-type : application/json
 ### Delete user
 DELETE http://localhost:3000/api/user
 Content-type : application/json
+
 { "email" : "fabou291@gmail.com" }
 
 ### Login
 POST http://localhost:3000/api/auth/login
 Content-type : application/json
+
 {
     "email" : "fabou291@gmail.com",
     "password" : "testTest1234."
