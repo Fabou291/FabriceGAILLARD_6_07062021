@@ -6,12 +6,12 @@ const getSchema = (password) => {
     const schema = new passwordValidator();
 
     schema
-        .is() .min(8)
-        .has() .uppercase()
-        .has() .lowercase()
-        .has() .digits()
-        .has() .not() .spaces()
-        .is() .not() .oneOf(["Passw0rd", "Password123"]);
+        .is().min(8)
+        .has().uppercase()
+        .has().lowercase()
+        .has().digits()
+        .has().not().spaces()
+        .is().not().oneOf(["Passw0rd", "Password123"]);
 
     return schema;
     
@@ -19,7 +19,7 @@ const getSchema = (password) => {
 
 const checkValidity = (req, res, next) => {
 
-    if (!getSchema(req.body.password).validate()) 
+    if (!getSchema().validate(req.body.password)) 
         next(createHttpError.Unauthorized("Invalid Password"));
     else 
         next();

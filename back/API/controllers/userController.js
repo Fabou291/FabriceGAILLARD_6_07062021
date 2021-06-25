@@ -2,9 +2,12 @@ import userModel from "../models/userModel.js";
 import createHttpError from "http-errors";
 
 const create = (req, res, next) => {
+
     const user = new userModel({
         email: req.body.email,
         password: req.body.password,
+        lastLog: new Date().getTime(),
+        attempt: 0,
     });
 
     user.save()
@@ -14,6 +17,7 @@ const create = (req, res, next) => {
                 error.code && error.code == 11000 ? "Email already used" : "Impossible to create"
             ));
         });
+        
 };
 
 

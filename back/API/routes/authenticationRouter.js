@@ -10,7 +10,6 @@ const router = express.Router();
 
 router.post(
     "/login",
-    ipController.gate,
     emailMiddleware.encrypt,
     authenticationController.login
 );
