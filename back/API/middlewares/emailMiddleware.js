@@ -13,6 +13,7 @@ const checkValidity = (req, res, next) => {
 };
 
 const encrypt = (req, res, next) => {
+
     req.body.email = crypto
         .createCipheriv(
             "aes-256-gcm",

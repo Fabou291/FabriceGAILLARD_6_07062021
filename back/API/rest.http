@@ -1,28 +1,33 @@
 ### Signup
 POST http://localhost:3000/api/auth/signup
 Content-type : application/json
-
 {
     "email" : "fabou291@gmail.com",
     "password" : "testTest1234."
 }
 
+### Delete user
+DELETE http://localhost:3000/api/user
+Content-type : application/json
+{ "email" : "fabou291@gmail.com" }
+
 ### Login
 POST http://localhost:3000/api/auth/login
 Content-type : application/json
-
 {
     "email" : "fabou291@gmail.com",
-    "password" : "testTest1234"
+    "password" : "testTest1234."
 }
 
 ### GET all sauces
 GET http://localhost:3000/api/sauces/
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MGQwM2QwOTFmM2EwYTM1MzhmYTlmODUiLCJpYXQiOjE2MjQyNjgyMTAsImV4cCI6MTYyNDI2ODIxMX0.jj3-eZnIJYpq_M9nIojxpyWDyGVHo1IBcqjUDXceD1c
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MGQ1OTg3YjI1YWYzNTM2ZmNkN2Q0YWEiLCJpYXQiOjE2MjQ2MjI5NTUsImV4cCI6MTYyNDYyMjk1Nn0.wxc_ToKcoOlTsEOIF566uza5Z5a2zrIhzcjXyTcvuRY
 
 
 ### GET one sauce
 GET http://localhost:3000/api/sauces/60cc80508e23851fa4666066
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MGQ1OTg3YjI1YWYzNTM2ZmNkN2Q0YWEiLCJpYXQiOjE2MjQ2MjI5NTUsImV4cCI6MTYyNDYyMjk1Nn0.wxc_ToKcoOlTsEOIF566uza5Z5a2zrIhzcjXyTcvuRY
+
 
 ### Create a sauce
 POST http://localhost:3000/api/sauces

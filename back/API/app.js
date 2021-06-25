@@ -9,6 +9,7 @@ import sessionConfig from "../config/sessionConfig.js";
 // Import des rooter
 import authenticationRouter from "./routes/authenticationRouter.js";
 import sauceRouter from "./routes/sauceRouter.js";
+import userRouter from "./routes/userRouter.js";
 
 
 const app = express();
@@ -22,6 +23,7 @@ app.use(express.json());
 app.use("/images", express.static(path.join(__dirname, "images/")));
 app.use("/api/auth", authenticationRouter);
 app.use("/api/sauces", sauceRouter);
+app.use("/api/user", userRouter);
 app.use((error, req, res, next) => {
     console.log(error)
     res.status(error.statusCode || 500).json({ error })

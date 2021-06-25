@@ -14,11 +14,18 @@ const create = (req, res, next) => {
         .then((user) => { res.status(201).json({ user }); })
         .catch((error) => {
             next(createHttpError.BadRequest(
-                error.code && error.code == 11000 ? "Email already used" : "Impossible to create"
+                error.code && error.code == 11000 ? "Email already used" : error.message
             ));
         });
         
 };
 
+const remove = (req,res,next) => {
+    console.log(req.params.email)
+    userModel.deleteOne({email : req.body.email})
+    .then(res.status(200).json({ message : "user deleted" }))
+    .catch(error => next(error));
+}
 
-export default { create };
+
+export default { create,remove };

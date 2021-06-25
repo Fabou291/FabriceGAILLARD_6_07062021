@@ -3,8 +3,7 @@ import userController from "../controllers/userController.js";
 import authenticationController from "../controllers/authenticationController.js";
 import emailMiddleware from "../middlewares/emailMiddleware.js";
 import passwordMiddleware from "../middlewares/passwordMiddleware.js";
-import authenticationMiddleware from "../middlewares/authenticationMiddleware.js"
-import ipController from "../controllers/ipController.js"
+
 
 const router = express.Router();
 
