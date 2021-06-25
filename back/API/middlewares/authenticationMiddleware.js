@@ -25,10 +25,11 @@ export default (req, res, next) => {
                                 else {
                                    /**
                                     * Là, devrais être délivré un nouveau token au front, pour qu'il le set
-                                    * dans le header authorization. Comme je ne dois pas toucher au front
-                                    * inutile de set un nouveau token : 
+                                    * dans le header authorization, mais le front ne le permet pas pour le moment.
+                                    * Comme je ne dois pas y toucher inutile de set un nouveau token : 
                                     *   tokenHelper.createToken(req.userId)
                                     */
+                                   req.authentication = { userId : decoded.userId }
                                    next(); 
                                 }
                             });
@@ -38,7 +39,10 @@ export default (req, res, next) => {
             }
             else{
                 if (req.userId && req.userId !== decoded.userId) return next(createHttpError.Unauthorized("Unauthorized - 1"));
-                else return next();                
+                else{
+                    req.authentication = { userId : decoded.userId }
+                    return next();  
+                }               
             }
         });
     } catch (error) {

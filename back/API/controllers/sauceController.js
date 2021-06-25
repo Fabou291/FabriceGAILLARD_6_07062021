@@ -47,7 +47,7 @@ const modify = async (req, res, next) => {
     } else req.body.sauce = { ...req.body };
 
     sauceModel
-        .updateOne({ _id: req.params.id }, { ...req.body.sauce, _id: req.params.id })
+        .updateOne({ _id: req.params.id, userId: req.authentication.userId }, { ...req.body.sauce, _id: req.params.id })
         .then((result) => {
             if (!result.ok) throw createHttpError.UnprocessableEntity("Wrong arguments");
 
@@ -62,7 +62,7 @@ const remove = async (req, res, next) => {
     await imageHelper.remove(req.params.id).catch(error => next(error));
 
     sauceModel
-        .deleteOne({ _id: req.params.id })
+        .deleteOne({ _id: req.params.id, userId: req.authentication.userId })
         .then((result) => {
             const message = result.deletedCount == 0 ? "Nothing to delete" : "The sauce hase been removed";
             res.status(200).json({ message: message });

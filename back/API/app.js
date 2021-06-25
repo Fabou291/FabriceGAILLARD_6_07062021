@@ -5,6 +5,7 @@ import { path, __dirname } from "../config/pathConfig.js"
 import headerConfig from "../config/headerConfig.js"
 import mongooseConfig from "../config/mongooseConfig.js";
 import sessionConfig from "../config/sessionConfig.js";
+import limiterConfig from "../config/limiterConfig.js"
 
 // Import des rooter
 import authenticationRouter from "./routes/authenticationRouter.js";
@@ -15,6 +16,7 @@ import userRouter from "./routes/userRouter.js";
 const app = express();
 
 mongooseConfig.initialization();
+limiterConfig.initialization(app);
 headerConfig.initialization(app)
 sessionConfig.initialization(app);
 
