@@ -10,9 +10,11 @@ const router = express.Router();
 router.post(
     "/login",
     nocache(),
+    emailMiddleware.checkValidity,
     emailMiddleware.encrypt,
     authenticationController.login
 );
+
 router.post(
     "/signup",
     nocache(),

@@ -1,4 +1,13 @@
- const handle = (sauce, like, userId) => {
+
+/**
+ * @function handle
+ * @description Gère les like d'une sauce donnée
+ * @param {Object} sauce 
+ * @param {Number} like 
+ * @param {String} userId 
+ * @returns 
+ */
+const handle = (sauce, like, userId) => {
     let usersLiked    = sauce.usersLiked.filter(userID => userID != userId);
     let usersDisliked = sauce.usersDisliked.filter(userID => userID != userId);
 

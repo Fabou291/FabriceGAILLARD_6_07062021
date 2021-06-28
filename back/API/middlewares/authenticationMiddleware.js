@@ -4,7 +4,13 @@ import userModel from "../models/userModel.js";
 
 
 
-
+/**
+ * @function verifAuthentication
+ * @description Vérifie que l'authentification de l'utilisateur est valide
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
+ */
 export default (req, res, next) => {
     try {
         if (!req.headers.authorization) throw createHttpError.Unauthorized("Not Authenticated");

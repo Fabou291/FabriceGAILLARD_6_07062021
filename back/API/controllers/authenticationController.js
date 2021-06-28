@@ -3,14 +3,27 @@ import bcrypt from "bcrypt";
 import createHttpError from "http-errors";
 import attemptLogHelper from "../helpers/attemptLogHelper.js"
 import tokenHelper from "../helpers/tokenHelper.js";
+import logModel from "../models/logModel.js";
 
-
+/**
+ * @function Login
+ * @description Authentifie l'utilisateur si les conditions suivantes sont réunie :
+ *  - Si le mail est présent en bdd
+ *  - Si son nombre de tentative n'excède pas 5 dans le temps limite impartie (protection contre brute force)
+ *  - Si le password est correcte
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ * @returns 
+ */
 const login = async (req, res, next) => {
     try {
         const now = new Date().getTime();
         
+
         const user = await userModel.findOne({ email: req.body.email });
         if (!user) throw createHttpError.NotFound("User not found");
+
 
         if(attemptLogHelper.isOutOfTimeAndAttemptLimit(now, user))
             throw createHttpError.TooManyRequests(`Too many tries to login, remaining time ${remainingTime(now, user.lastLog)}`);

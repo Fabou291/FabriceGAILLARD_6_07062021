@@ -3,7 +3,13 @@ import createHttpError from "http-errors";
 import likeHelper from "../helpers/LikeHelper.js";
 import imageHelper from "../helpers/ImageHelper.js"
 
-
+/**
+ * @function getAll
+ * @description Récupère l'ensemble des sauces
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
 const getAll = (req, res, next) => {
     sauceModel
         .find()
@@ -11,6 +17,13 @@ const getAll = (req, res, next) => {
         .catch((error) => next(createHttpError.BadRequest(error.message)));
 }
 
+/**
+ * @function getOne
+ * @description Récupère une sauce en fonction de l'id (req.params.id)
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
 const getOne = (req, res, next) => {
     sauceModel
         .findOne({ _id: req.params.id })
@@ -23,6 +36,13 @@ const getOne = (req, res, next) => {
         });
 }
 
+/**
+ * @function getOne
+ * @description Crée une nouvelle sauce en bdd
+ * @param {*} req (req.body.sauce)
+ * @param {*} res 
+ * @param {*} next 
+ */
 const create = (req, res, next) => {
     req.body.sauce = JSON.parse(req.body.sauce);
 
@@ -37,6 +57,13 @@ const create = (req, res, next) => {
         .catch((error) => next(error));
 }
 
+/**
+ * @function modify
+ * @description Modifie les informations d'une sauce déja existante en bdd
+ * @param {*} req (req.file, req.body.sauce)
+ * @param {*} res 
+ * @param {*} next 
+ */
 const modify = async (req, res, next) => {
     if (req.file) {
         req.body.sauce = {
@@ -58,6 +85,13 @@ const modify = async (req, res, next) => {
         .catch((error) => next(error));
 }
 
+/**
+ * @function remove
+ * @description Supprime la sauce en bdd dont l'id correspond
+ * @param {*} req (req.params.id)
+ * @param {*} res 
+ * @param {*} next 
+ */
 const remove = async (req, res, next) => {
     await imageHelper.remove(req.params.id).catch(error => next(error));
 
@@ -70,6 +104,13 @@ const remove = async (req, res, next) => {
         .catch((error) => next(error));
 }
 
+/**
+ * @function like
+ * @description Met à jours les données relative aux like / dislike pour la sauce défini par l'id
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
 const like = async (req, res, next) => {
     try {
         const sauce = await sauceModel.findOne({ _id: req.params.id });

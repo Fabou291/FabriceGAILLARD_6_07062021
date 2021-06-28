@@ -1,31 +1,30 @@
 import userModel from "../models/userModel.js";
 import createHttpError from "http-errors";
 
+/**
+ * @function create
+ * @description Crée un utilisateur et le sauvegarde en bdd
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
 const create = (req, res, next) => {
 
     const user = new userModel({
         email: req.body.email,
         password: req.body.password,
-        lastLog: new Date().getTime(),
-        attempt: 0,
+        lastLog: new Date().getTime()
     });
 
     user.save()
-        .then((user) => { res.status(201).json({ user }); })
+        .then((user) => { res.status(201).json({ message : 'success' }); })
         .catch((error) => {
-            next(createHttpError.BadRequest(
-                error.code && error.code == 11000 ? "Email already used" : error.message
-            ));
+            const message = error.code && error.code == 11000 ? "Email already used" : error.message;
+            res.status(400).json({ message : message })
         });
         
 };
 
-const remove = (req,res,next) => {
-    console.log(req.params.email)
-    userModel.deleteOne({email : req.body.email})
-    .then(res.status(200).json({ message : "user deleted" }))
-    .catch(error => next(error));
-}
 
 
-export default { create,remove };
+export default { create };

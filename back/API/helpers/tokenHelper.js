@@ -1,7 +1,12 @@
 import JWT from "jsonwebtoken";
 
 
-
+/**
+ * @function createToken
+ * @description Crée un token en fonction de l'id de l'utilisateur
+ * @param {String} userId 
+ * @returns 
+ */
 const createToken = (userId) => {
 
     return JWT.sign(
@@ -12,6 +17,12 @@ const createToken = (userId) => {
 
 };
 
+/**
+ * @function createRefreshToken
+ * @description Crée un refresh token en fonction de l'id de l'utilisateur
+ * @param {String} userId 
+ * @returns 
+ */
 const createRefreshToken = (userId) => {
     return JWT.sign(
         { userId: userId }, 

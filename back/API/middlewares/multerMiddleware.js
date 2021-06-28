@@ -9,6 +9,9 @@ const mimeTypes = {
     'image/gif' : 'gif'
 };
 
+/**
+ * Défini la configuration de multer (qui gère l'upload de fichier )
+ */
 const storage = multer.diskStorage({
 
     destination: function (req, file, cb) {

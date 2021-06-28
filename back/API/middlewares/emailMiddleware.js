@@ -4,7 +4,13 @@ import emailValidator from "email-validator"
 import dotenv from "dotenv";
 dotenv.config();
 
-
+/**
+ * @function checkValidity
+ * @description Check la validité de l'email
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {*} next 
+ */
 const checkValidity = (req, res, next) => {
     if (!emailValidator.validate(req.body.email)) 
         next(createHttpError.Unauthorized('invalid email'));
@@ -12,6 +18,13 @@ const checkValidity = (req, res, next) => {
     next();
 };
 
+/**
+ * @function encrypt
+ * @description Chiffre l'e-mail 
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {*} next 
+ */
 const encrypt = (req, res, next) => {
 
     req.body.email = crypto

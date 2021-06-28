@@ -2,6 +2,11 @@ import sauceModel from "../models/sauceModel.js";
 import createHttpError from "http-errors";
 import fsPromises from "fs/promises"
 
+/**
+ * @function remove
+ * @description Supprime l'image du dossier image
+ * @param {String} id 
+ */
 const remove = async (id) => {
     const sauce = await sauceModel.findOne({ _id: id });
     if (!sauce) throw createHttpError.NotFound("Sauce not found");

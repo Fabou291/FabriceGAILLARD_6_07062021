@@ -16,10 +16,10 @@ Content-type : application/json
 ### Login
 POST http://localhost:3000/api/auth/login
 Content-type : application/json
-
+        //req.body.email = { "$gte": "" };
 {
     "email" : "fabou291@gmail.com",
-    "password" : "testTest1234."
+    "password" : "testTesdt1234."
 }
 
 ### GET all sauces
