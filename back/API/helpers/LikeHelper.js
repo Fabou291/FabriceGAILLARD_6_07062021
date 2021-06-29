@@ -22,4 +22,4 @@ const handle = (sauce, like, userId) => {
     }   
 }
 
-export default handle;
+export default {handle};

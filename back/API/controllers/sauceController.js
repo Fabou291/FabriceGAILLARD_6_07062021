@@ -2,6 +2,7 @@ import sauceModel from "../models/sauceModel.js";
 import createHttpError from "http-errors";
 import likeHelper from "../helpers/LikeHelper.js";
 import imageHelper from "../helpers/ImageHelper.js"
+import xss from "xss"
 
 /**
  * @function getAll
@@ -25,8 +26,9 @@ const getAll = (req, res, next) => {
  * @param {*} next 
  */
 const getOne = (req, res, next) => {
+
     sauceModel
-        .findOne({ _id: req.params.id })
+        .findOne({ _id: xss(req.params.id) })
         .then((sauce) => {
             if (!sauce) throw createHttpError.NotFound("Sauce not found");
             else res.status(200).json(sauce);
@@ -37,14 +39,16 @@ const getOne = (req, res, next) => {
 }
 
 /**
- * @function getOne
- * @description Crée une nouvelle sauce en bdd
+ * @function create
+ * @description Ajoute une nouvelle sauce en bdd
  * @param {*} req (req.body.sauce)
  * @param {*} res 
  * @param {*} next 
  */
 const create = (req, res, next) => {
+
     req.body.sauce = JSON.parse(req.body.sauce);
+    for(let k in req.body.sauce) req.body.sauce[k] = xss(req.body.sauce[k]);
 
     delete req.body._id;
     const sauce = new sauceModel({
@@ -73,8 +77,10 @@ const modify = async (req, res, next) => {
         await imageHelper.remove(req.params.id).catch(error => next(error))
     } else req.body.sauce = { ...req.body };
 
+    for(let k in req.body.sauce) req.body.sauce[k] = xss(req.body.sauce[k]);
+
     sauceModel
-        .updateOne({ _id: req.params.id, userId: req.authentication.userId }, { ...req.body.sauce, _id: req.params.id })
+        .updateOne({ _id: xss(req.params.id), userId: req.authentication.userId }, { ...req.body.sauce, _id: xss(req.params.id) })
         .then((result) => {
             if (!result.ok) throw createHttpError.UnprocessableEntity("Wrong arguments");
 
@@ -93,6 +99,8 @@ const modify = async (req, res, next) => {
  * @param {*} next 
  */
 const remove = async (req, res, next) => {
+    req.params.id = xss(req.params.id);
+
     await imageHelper.remove(req.params.id).catch(error => next(error));
 
     sauceModel
@@ -113,12 +121,13 @@ const remove = async (req, res, next) => {
  */
 const like = async (req, res, next) => {
     try {
+        req.params.id = xss(req.params.id);
         const sauce = await sauceModel.findOne({ _id: req.params.id });
         if (!sauce) throw createHttpError.NotFound("Sauce not found");
 
         const result = await sauceModel.updateOne(
             { _id: req.params.id },
-            { ...likeHelper.handle(sauce, req.body.like, req.body.userId) }
+            { ...likeHelper.handle(sauce, xss(req.body.like), xss(req.body.userId)) }
         );
 
         const message = result.nModified == 0 ? "nothing has been changed on this sauce" : "sauce successfully updated";

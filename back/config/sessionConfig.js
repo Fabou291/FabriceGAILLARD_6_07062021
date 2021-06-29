@@ -18,7 +18,7 @@ const initialization = (app) => {
                 secure: NODE_ENV === "production", //passer à true lorsque la connexion sera en https
             },
         })
-    );    
+    );
 }
 
 export default { initialization }

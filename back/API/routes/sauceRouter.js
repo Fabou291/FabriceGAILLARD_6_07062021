@@ -5,7 +5,7 @@ import multer from "../middlewares/multerMiddleware.js";
 
 const router = express.Router();
 
-router.get("/", auth, sauceController.getAll);
+router.get("/", auth,  sauceController.getAll);
 
 router.get("/:id", auth, sauceController.getOne);
 

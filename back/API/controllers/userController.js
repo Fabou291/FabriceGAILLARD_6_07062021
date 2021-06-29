@@ -13,7 +13,8 @@ const create = (req, res, next) => {
     const user = new userModel({
         email: req.body.email,
         password: req.body.password,
-        lastLog: new Date().getTime()
+        lastLog: new Date().getTime(),
+        attempt: 0,
     });
 
     user.save()
@@ -22,7 +23,7 @@ const create = (req, res, next) => {
             const message = error.code && error.code == 11000 ? "Email already used" : error.message;
             res.status(400).json({ message : message })
         });
-        
+
 };
 
 

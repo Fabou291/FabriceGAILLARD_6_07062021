@@ -1,4 +1,5 @@
 import express from "express";
+import mongoSanitize from "express-mongo-sanitize"
 
 // Import des fichiers de config
 import { path, __dirname } from "../config/pathConfig.js"
@@ -12,7 +13,10 @@ import authenticationRouter from "./routes/authenticationRouter.js";
 import sauceRouter from "./routes/sauceRouter.js";
 
 
+
 const app = express();
+
+
 
 mongooseConfig.initialization();
 limiterConfig.initialization(app);
@@ -20,6 +24,7 @@ headerConfig.initialization(app);
 sessionConfig.initialization(app);
 
 app.use(express.json());
+app.use(mongoSanitize());
 app.use("/images", express.static(path.join(__dirname, "images/")));
 app.use("/api/auth", authenticationRouter);
 app.use("/api/sauces", sauceRouter);
