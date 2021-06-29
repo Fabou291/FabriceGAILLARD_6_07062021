@@ -52,7 +52,7 @@ const login = async (req, res, next) => {
         await userModel.updateOne({ email: user.email }, update);
     } catch (error) {
         try {
-            await logAuthHelper.create(user, req.connection.remoteAddress, statusCode, error.statusCode);
+            await logAuthHelper.create(user, req.connection.remoteAddress, error.statusCode, now);
         } catch (error) {
             return next(error);
         }
