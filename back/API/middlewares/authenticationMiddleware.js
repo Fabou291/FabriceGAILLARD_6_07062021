@@ -24,19 +24,18 @@ export default (req, res, next) => {
                     userModel
                         .findOne({ _id: decoded.userId })
                         .then((user) => {
-                            if(!user) return next(createHttpError.Unauthorized("Unauthorized"));
+                            if(!user) throw createHttpError.Unauthorized("Unauthorized");
                             JWT.verify(user.refreshToken, process.env.SECRET_REFRESH_TOKEN, (err, decoded) => {
-                                if(err) return next(createHttpError.Unauthorized("Unauthorized"));
-                                else if (req.userId && req.userId !== decoded.userId) return next(createHttpError.Unauthorized("Unauthorized"));
+                                if(err) throw createHttpError.Unauthorized("Unauthorized");
+                                else if (req.userId && req.userId !== decoded.userId) throw createHttpError.Unauthorized("Unauthorized");
                                 else {
                                    /**
                                     * Là, devrais être délivré un nouveau token au front, pour qu'il le set
                                     * dans le header authorization, mais le front ne le permet pas pour le moment.
-                                    * Comme je ne dois pas y toucher inutile de set un nouveau token : 
                                     *   tokenHelper.createToken(req.userId)
                                     */
                                    req.authentication = { userId : decoded.userId }
-                                   next(); 
+                                   return next(); 
                                 }
                             });
                         })
@@ -52,6 +51,6 @@ export default (req, res, next) => {
             }
         });
     } catch (error) {
-        next(error);
+        return next(error);
     }
 };
