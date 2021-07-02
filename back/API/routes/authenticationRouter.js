@@ -8,14 +8,6 @@ import nocache from "nocache"
 const router = express.Router();
 
 router.post(
-    "/login",
-    nocache(),
-    emailMiddleware.checkValidity,
-    emailMiddleware.encrypt,
-    authenticationController.login
-);
-
-router.post(
     "/signup",
     nocache(),
     emailMiddleware.checkValidity,
@@ -24,6 +16,15 @@ router.post(
     passwordMiddleware.encrypt,
     userController.create
 );
+
+router.post(
+    "/login",
+    nocache(),
+    emailMiddleware.checkValidity,
+    emailMiddleware.encrypt,
+    authenticationController.login
+);
+
 
 
 

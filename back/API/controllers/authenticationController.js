@@ -27,29 +27,36 @@ const login = async (req, res, next) => {
         if (!user) throw createHttpError.NotFound("User not found");
 
         if (attemptLogHelper.isOutOfTimeAndAttemptLimit(now, user))
-            throw createHttpError.TooManyRequests(`Too many tries to login, remaining time ${remainingTime(now, user.lastLog)}`);
+            throw createHttpError.TooManyRequests(
+                `Too many tries to login, remaining time ${attemptLogHelper.remainingTime(now, user.lastLog)}`
+            );
 
         const isValidPassword = await bcrypt.compare(req.body.password, user.password);
         if (!isValidPassword) {
             if (attemptLogHelper.isOutOfAttemptLimit(user.attempt) || attemptLogHelper.isOutOfTimeLimit(now, user.lastLog))
                 user.attempt = 0;
 
-            update = {
-                attempt: ++user.attempt,
-                lastLog: attemptLogHelper.isOutOfTimeLimit(now, user.lastLog) ? now : user.lastLog,
-            };
+            await userModel.updateOne(
+                { email: user.email },
+                (update = {
+                    attempt: ++user.attempt,
+                    lastLog: attemptLogHelper.isOutOfTimeLimit(now, user.lastLog) ? now : user.lastLog,
+                })
+            );
 
             if (attemptLogHelper.isOutOfTimeAndAttemptLimit(now, user))
                 throw createHttpError.TooManyRequests(
-                    `Too many tries to login, remaining time ${remainingTime(now, user.lastLog)}`
+                    `Too many tries to login, remaining time ${attemptLogHelper.remainingTime(now, user.lastLog)}`
                 );
             else
                 throw createHttpError.Unauthorized(
                     `invalid password, remaining attempt : ${parseInt(process.env.ATTEMPT_PASSWORD_LIMIT) - user.attempt}`
                 );
-        } else update = { attempt: 0, lastlog: now, refreshToken: tokenHelper.createRefreshToken(user._id) };
-
-        await userModel.updateOne({ email: user.email }, update);
+        } else
+            await userModel.updateOne(
+                { email: user.email },
+                { attempt: 0, lastlog: now, refreshToken: tokenHelper.createRefreshToken(user._id) }
+            );
     } catch (error) {
         try {
             await logAuthHelper.create(user, req.connection.remoteAddress, error.statusCode, now);
@@ -58,7 +65,7 @@ const login = async (req, res, next) => {
         }
         return next(error);
     }
-    
+
     return res.status(200).json({ userId: user._id, token: tokenHelper.createToken(user._id) });
 };
 

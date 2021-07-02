@@ -3,10 +3,9 @@ POST http://localhost:3000/api/auth/signup
 Content-type : application/json
 
 {
-    "email" : "fabou291@gmail.com",
+    "email" : "unautremail@gmail.com",
     "password" : "testTest1234."
 }
-
 
 ### Login
 POST http://localhost:3000/api/auth/login
@@ -19,17 +18,17 @@ Content-type : application/json
 
 ### GET all sauces
 GET http://localhost:3000/api/sauces/
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MGRhMGEwMzkwNGZjNDExZDRjOWM0NmIiLCJpYXQiOjE2MjQ5NTM0NDYsImV4cCI6MTYyNDk1MzQ0N30.2VFuZFFWOznbe5xbBYV6oz1UsNVr6kuZKhTl3Z-nURg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MGRiNDViNjNkYWQwNDFiYTRiZjJjOWEiLCJpYXQiOjE2MjUwNTkzMDEsImV4cCI6MTYyNTA2MjkwMX0.Mfm39yM4ZCGjfP9WE-6JdBtNZ2W4GwInvscoeZzRiZ0
 
 
 ### GET one sauce
-GET http://localhost:3000/api/sauces/60cc80508e23851fa4666066
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MGQ1OTg3YjI1YWYzNTM2ZmNkN2Q0YWEiLCJpYXQiOjE2MjQ2MjI5NTUsImV4cCI6MTYyNDYyMjk1Nn0.wxc_ToKcoOlTsEOIF566uza5Z5a2zrIhzcjXyTcvuRY
+GET http://localhost:3000/api/sauces/60db3cc1892a793e14d7a0ac
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MGRiNDViNjNkYWQwNDFiYTRiZjJjOWEiLCJpYXQiOjE2MjUwNTkzMDEsImV4cCI6MTYyNTA2MjkwMX0.Mfm39yM4ZCGjfP9WE-6JdBtNZ2W4GwInvscoeZzRiZ0
 
 
 ### Create a sauce
 POST http://localhost:3000/api/sauces
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MGRhMGEwMzkwNGZjNDExZDRjOWM0NmIiLCJpYXQiOjE2MjQ5NTM0NDYsImV4cCI6MTYyNDk1MzQ0N30.2VFuZFFWOznbe5xbBYV6oz1UsNVr6kuZKhTl3Z-nURg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MGRiNDViNjNkYWQwNDFiYTRiZjJjOWEiLCJpYXQiOjE2MjUwNTkzMDEsImV4cCI6MTYyNTA2MjkwMX0.Mfm39yM4ZCGjfP9WE-6JdBtNZ2W4GwInvscoeZzRiZ0
 Content-type : application/json
 
 {
@@ -46,6 +45,7 @@ Content-type : application/json
 
 ### Modify a sauce
 PUT http://localhost:3000/api/sauces/60cc80508e23851fa4666066
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MGRiNDViNjNkYWQwNDFiYTRiZjJjOWEiLCJpYXQiOjE2MjUwNTkzMDEsImV4cCI6MTYyNTA2MjkwMX0.Mfm39yM4ZCGjfP9WE-6JdBtNZ2W4GwInvscoeZzRiZ0
 Content-type : application/json
 
 {
@@ -54,21 +54,16 @@ Content-type : application/json
 }
 
 ### Delete a sauce
-DELETE http://localhost:3000/api/sauces/60d0a9584ab08643dc6e27ca 
+DELETE http://localhost:3000/api/sauces/60d0a9584ab08643dc6e27ca
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MGRiNDViNjNkYWQwNDFiYTRiZjJjOWEiLCJpYXQiOjE2MjUwNTkzMDEsImV4cCI6MTYyNTA2MjkwMX0.Mfm39yM4ZCGjfP9WE-6JdBtNZ2W4GwInvscoeZzRiZ0
+
 
 ### Handle likes sauces
 POST http://localhost:3000/api/sauces/60cc80508e23851fa4666066/like
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MGRiNDViNjNkYWQwNDFiYTRiZjJjOWEiLCJpYXQiOjE2MjUwNTkzMDEsImV4cCI6MTYyNTA2MjkwMX0.Mfm39yM4ZCGjfP9WE-6JdBtNZ2W4GwInvscoeZzRiZ0
 Content-type : application/json
 
 {
     "userId" : "60d03d091f3a0a3538fa9f85",
     "like" : 1
 }
-
-
-### Test auth
-GET http://localhost:3000/api/auth/auth
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MGQwM2QwOTFmM2EwYTM1MzhmYTlmODUiLCJpYXQiOjE2MjQyNjgyMTAsImV4cCI6MTYyNDI2ODIxMX0.jj3-eZnIJYpq_M9nIojxpyWDyGVHo1IBcqjUDXceD1c
-
-### An unknow route
-GET http://localhost:3000/unknow_route
